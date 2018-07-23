@@ -32,7 +32,6 @@ def canRx():
 		while True:
 			socketio.sleep(1)
 			id = str(random.randint(1, 6))
-			print(id)
 			if random.randint(0, 1):  
 				store.update("rittal_"+"Drehi"+"_"+id, "off")
 				socketio.emit('plugStatus',{'leiste': "Drehi",'plug':  id,'status':  "off"},broadcast=True, namespace='/labnet')

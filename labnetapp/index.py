@@ -16,7 +16,7 @@ def test_message(message):
     else:
         store.update("rittal_"+message["leiste"]+"_"+message["plug"], "on")
         emit('plugStatus',{'leiste': message["leiste"],'plug':  message["plug"],'status':  "on"},broadcast=True, namespace='/labnet')
-    
+
 
 @app.route('/', methods=('GET', 'POST'))
 @app.route('/index')

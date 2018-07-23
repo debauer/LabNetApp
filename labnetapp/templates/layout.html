@@ -1,6 +1,3 @@
-
-{% import "bootstrap/fixes.html" as fixes %}
-{% import "bootstrap/utils.html" as util %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +11,57 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.12.4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.css') }}"></script>
 
 
     <title>LabNetApp</title>
-    {{fixes.ie8()}}
 
     
 </head>
+
+<script type="text/javascript" charset="utf-8">   
+$(document).ready(function(){
+    var labnet = io.connect('192.168.149.128:' + location.port + '/labnet');
+    $( ".rittal" ).not(".disabled").click(function(event) {
+            labnet.emit('sendButton', {leiste: $(this).attr("leiste"), plug: $(this).attr("plug"), status: $(this).attr("status"), name: $(this).text()});
+            return false;
+    });
+    var mpd = io.connect('192.168.149.128:' + location.port + '/mpd');
+    $( ".mpd.next" ).click(function(event) {
+            mpd.emit('mpdNext', {});
+            return false;
+    });
+    $( ".mpd.pause" ).click(function(event) {
+            mpd.emit('mpdPause', {});
+            return false;
+    });
+    $( ".mpd.play" ).click(function(event) {
+            mpd.emit('mpdPlay', {});
+            return false;
+    });
+    $( ".mpd.previous" ).click(function(event) {
+            mpd.emit('mpdPrev', {});
+            return false;
+    });
+    $( ".mpd.minus" ).click(function(event) {
+            mpd.emit('mpdMinus', {});
+            return false;
+    });
+    $( ".mpd.plus" ).click(function(event) {
+            mpd.emit('mpdPlus', {});
+            return false;
+    });
+    labnet.on('plugStatus', function(msg) {
+            console.log(msg);
+            $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").attr("status",msg["status"]);
+            if(msg["status"] == "on"){
+                $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
+            }else{
+                $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
+            }
+    });
+});
+</script>
 
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -33,14 +74,15 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="/">LabNetApp</a>
-        </div>
-        <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">dashboard</a></li>
-                <li><a href="/config">config</a></li>
+                <!--<li><a href="/config">config</a></li>
                 <li><a href="/journal">fill journal</a></li>
-                <li><a href="/log">CAN Bus Log</a></li>
+                <li><a href="/log">CAN Bus Log</a></li>-->
           </ul>
+        </div>
+        <div class="navbar-collapse collapse">
+          
         </div>
       </div>
     </div>
@@ -62,6 +104,6 @@
         </div>
       </div>
     </div>
-
+{% include "mpd_toolbar.html" %}
 </body>
 </html>

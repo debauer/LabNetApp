@@ -2,12 +2,12 @@
 import os, json, sys#, queue
 from flask import Flask , render_template, flash
 from flask_appconfig import AppConfig
-from flask_bootstrap import Bootstrap
+#from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
 AppConfig(app,None)
-Bootstrap(app)
+#Bootstrap(app)
 socketio = SocketIO(app)
 
 #msgQ = queue.Queue()
@@ -40,9 +40,9 @@ from labnetapp import keyvalue as kv
 store = kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
 
 from labnetapp import index
-from labnetapp import journal
 from labnetapp import config
 from labnetapp import can_log
 from labnetapp import can_handler
 from labnetapp import csv_wrapper
 from labnetapp import labnet
+from labnetapp import mpd

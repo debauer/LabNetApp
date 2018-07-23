@@ -2,28 +2,6 @@
 {% block body %}
 {{super()}}
 <h1>Steckdosenleisten</h1>
-{{util.flashed_messages()}}
-
-
-    <script type="text/javascript" charset="utf-8">   
-    $(document).ready(function(){
-        var socket = io.connect('192.168.149.128:' + location.port + '/labnet');
-        $( ".btn" ).not(".disabled").click(function(event) {
-                socket.emit('sendButton', {leiste: $(this).attr("leiste"), plug: $(this).attr("plug"), status: $(this).attr("status"), name: $(this).text()});
-                return false;
-        });
-        socket.on('plugStatus', function(msg) {
-                console.log(msg);
-                $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").attr("status",msg["status"]);
-                if(msg["status"] == "on"){
-                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
-                }else{
-                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
-                }
-        });
-    });
-    </script>
-
 
   {% for s in strips %}
       <div class="block full">
@@ -42,7 +20,7 @@
                         {% if p.changeable %}
                             {% if p.status == 'on' %}btn-success{% elif p.status == 'off' %}btn-danger{% endif %}
                         {% endif %} 
-                        plug_on btn btn-lg btn-block 
+                        plug_on btn btn-lg btn-block rittal
                         ">{{p.name}}</button>
                 </div>
               </div>
