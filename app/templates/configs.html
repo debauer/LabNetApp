@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block body %}
+{{super()}}
+{{util.flashed_messages()}}
+<div class="container">
+	<h1>Configs {{count}}</h1>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-6">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-6">
+					<h3>Upload</h3>
+					<form style="display:inline-block;" action="/config" method=post enctype=multipart/form-data>
+						<input style="display:inline-block;" class="btn btn-default"  type=file name=file><input style="display:inline-block;" type=submit class="btn btn-default" value=Upload>
+					</form>
+				</div>
+			</div>
+        	<h3>Archive</h3>
+        	<table  class="table table-striped">
+        		{% for f in files %}
+        		<tr>
+					<td style="vertical-align: middle">{{f.name}}</td>
+					<td><a class="btn btn-success" role="button" href="/config/load/{{f.name}}">load to hw</a></td>
+					<td><a class="btn btn-info" role="button" href="/config/show/{{f.name}}">show</a></td>
+					<td><a class="btn btn-danger" role="button" href="/config/delete/{{f.name}}">delete</a></td>
+					<!--<td style="vertical-align: middle">{{f.date}}</td>-->
+				</tr>
+				{% endfor %}
+			</table>
+			<!--<ul class="list-unstyled">
+				{% for f in files %}
+				   <li><a href="/configs/load/{{f.name}}">{{f.date}} - {{f.name}}</a></li>
+				{% endfor %}
+			</ul>-->
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-6">
+			{% if filename %}
+				<h3>{{filename}}</h3>
+			{% else %}
+			<h3>current config</h3>
+			{% endif %}
+
+
+
+			<ul class="nav nav-pills">
+			  <li class="active" id="show-tab-raw"><a href="#">Raw</a></li>
+			  <!--<li id="show-tab-table"><a href="#">Table</a></li>-->
+			  <li id="show-tab-edit"><a href="#">Edit</a></li>
+			</ul>
+			<br>
+			<div id="tab-raw" style="border: 1px solid #444; padding: 5px">
+				{{active_config|safe}}
+			</div>
+			<div id="tab-table" style="border: 1px solid #444; padding: 5px">
+				table
+			</div>
+			<div id="tab-edit" style="border: 1px solid #444; padding: 5px">
+				edit
+			</div>
+		</div>
+	</div>
+</div>
+
+
+			    <script type="text/javascript">
+			    $(document).ready(function(){
+			    	$("#tab-table").hide();
+			        $("#tab-edit").hide();
+			        $("#show-tab-raw").click(function(e){
+			        	$("#show-tab-raw").addClass("active");
+			        	$("#show-tab-table").removeClass("active");
+			            $("#show-tab-edit").removeClass("active");
+			            $("#tab-raw").show();
+			            $("#tab-table").hide();
+			            $("#tab-edit").hide();
+			        });
+			        $("#show-tab-table").click(function(e){
+			        	$("#show-tab-raw").removeClass("active");
+			        	$("#show-tab-table").addClass("active");
+			            $("#show-tab-edit").removeClass("active");
+			            $("#tab-raw").hide();
+			            $("#tab-table").show();
+			            $("#tab-edit").hide();
+			        });
+			        $("#show-tab-edit").click(function(e){
+			        	$("#show-tab-raw").removeClass("active");
+			        	$("#show-tab-table").removeClass("active");
+			            $("#show-tab-edit").addClass("active");
+			            $("#tab-raw").hide();
+			            $("#tab-table").hide();
+			            $("#tab-edit").show();
+			        });
+			    });
+			    </script>
+
+{% endblock %}
+

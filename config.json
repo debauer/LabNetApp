@@ -1,0 +1,25 @@
+{
+	"main": {
+		"port": "3333",
+		"ip": "192.168.149.128",
+		"folder": "/mnt/hgfs/dispenserApp"
+	},
+	"feature":{
+		"redis": true,
+		"mpd": true,
+		"configMgmt": false,
+		"canLog": false,
+		"can": false,
+		"com": false
+	},
+	"can":{
+		"interface":"can1",
+		"type":"socketcan",
+		"config": "main.json",
+		"logFolder": "can_log"
+	},
+	"com": {
+		"port": "/dev/ttyS10",
+		"baud": "9600"
+	}
+}

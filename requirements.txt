@@ -1,0 +1,9 @@
+flask>=1.0.2
+flask_appconfig>=0.11.1
+flask_bootstrap>=3.3.7.1
+redis>=2.10.6
+serial>=0.0.67
+psutil>=5.4.6
+flask-socketio>=2.0.0
+eventlet>=0.23.0
+python-can>=2.2.1

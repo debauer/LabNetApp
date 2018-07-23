@@ -1,0 +1,67 @@
+
+{% import "bootstrap/fixes.html" as fixes %}
+{% import "bootstrap/utils.html" as util %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/LabNetApp.css') }}" rel="stylesheet">
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.12.4.min.js') }}"></script>
+
+
+    <title>LabNetApp</title>
+    {{fixes.ie8()}}
+
+    
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">LabNetApp</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">dashboard</a></li>
+                <li><a href="/config">config</a></li>
+                <li><a href="/journal">fill journal</a></li>
+                <li><a href="/log">CAN Bus Log</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!--<div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/config">Config</a></li>
+            <li><a href="/journal">Journal</a></li>
+            <li><a href="/log">System Logs</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">-->
+        <div class="col-sm-12 col-md-12 col-xs-12 main">
+          {% block body %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

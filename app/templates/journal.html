@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% block body %}
+{{super()}}
+{{util.flashed_messages()}}
+
+{% for j in journal %}
+<!-- Modal -->
+<div id="modal-{{j.id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">#{{j.id}} - {{j.menge}} KG - {{j.preis}} €</h4>
+      </div>
+      <div class="modal-body">
+      		<table  class="table table-striped">
+    		    <tr ><td style="text-align: right"><b>Start Time:</b></td><td style="width:50%">{{j.start}}</td></tr>
+				<tr ><td style="text-align: right"><b>End Time:</b></td><td>{{j.end}}</td></tr>
+				<tr ><td style="text-align: right"><b>pressure start:</b></td><td>{{j.pGasStart}} Bar</td></tr>
+				<tr ><td style="text-align: right"><b>pressure end:</b></td><td>{{j.pGasEnd}} Bar</td></tr>
+				<tr ><td style="text-align: right"><b>gas temperature:</b></td><td>{{j.tGas}} °C</td></tr>
+				<tr ><td style="text-align: right"><b>ambient temperature:</b></td><td>{{j.tAussen}} °C</td></tr>
+				<tr ><td style="text-align: right"><b>wait time 1:</b></td><td>{{j.w1}} ms</td></tr>
+				<tr ><td style="text-align: right"><b>wait time 2:</b></td><td>{{j.w2}} ms</td></tr>
+				<tr ><td style="text-align: right"><b>hold time 1:</b></td><td>{{j.h1}} ms</td></tr>
+				<tr ><td style="text-align: right"><b>hold time 2:</b></td><td>{{j.h2}} ms</td></tr>
+			</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endfor %}
+
+{% for j in journal %}
+<!-- Modal -->
+<div id="modal-log-{{j.id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">#{{j.id}} - {{j.menge}} KG - {{j.preis}} €</h4>
+      </div>
+      <div class="modal-body">
+      		<table  class="table table-striped">
+      			<tr >
+      				<th>time</th>
+      				<th>banks</th>
+      				<th>amount</th>
+      				<th>txt</th>
+      			</tr>
+      			{% for jl in j.log %}
+    		    <tr   class="{{jl.status}}">
+    		    	<td>{{jl.time}}</td>
+    		    	<td>{{jl.banks}}</td>
+    		    	<td>{{jl.amount}}</td>
+    		    	<td>{{jl.txt}}</td>
+    		    </tr>
+				{% endfor %}
+			</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endfor %}
+
+
+<div class="container">
+
+	<h1>fill journal</h1>
+	<div class="row">
+		<div class="col-xs-12 col-sm-4 col-md-3">
+			<h3>Archive</h3>
+			<div class="list-group">
+				{% for ll in journal_list %}
+					{% if day == ll.date %}
+						<a class="list-group-item active" href="/journal/{{ll.date}}">{{ll.date}}</a>
+					{% else %}
+						<a class="list-group-item" href="/journal/{{ll.date}}">{{ll.date}}</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-8 col-md-9">
+			<h3>Journal for {{day}}</h3>
+    		    	<table  class="table table-striped">
+ 						<tr>
+						   		<th>more</td>
+						   		<th>start</td>
+						   		<th>amount</td>
+						   		<th>price</td>
+						   		<th>toll amount</td>
+						</tr>
+    		    		{% for j in journal %}
+    		    		<tr >
+    		    				<td style="vertical-align: middle"><button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modal-{{j.id}}">Details</button> / <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modal-log-{{j.id}}">Log</button></td>
+    		    				<td style="vertical-align: middle">{{j.start}}</td>
+						   		<td style="vertical-align: middle">{{j.menge}} KG</td>
+						   		<td style="vertical-align: middle">{{j.preis}} €</td>
+						   		<td style="vertical-align: middle">{{j.zollmenge}} KG</td>
+						</tr>
+						{% endfor %}
+					</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block body %}
+{{super()}}
+{{util.flashed_messages()}}
+<div class="container">
+	<h1>System Logs</h1>
+	<div class="row">
+		<div class="col-xs-12 col-sm-4 col-md-3">
+			<h3>Archive</h3>
+			<div class="list-group">
+				{% for ll in log_list %}
+					{% if day == ll.date %}
+						<a class="list-group-item active" href="/log/{{ll.date}}">{{ll.date}}</a>
+					{% else %}
+						<a class="list-group-item" href="/log/{{ll.date}}">{{ll.date}}</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+        <div class="col-xs-12 col-sm-8 col-md-9">
+        	<h3>Log for {{day}}</h3>
+        	<table  class="table table-striped">
+				<tr>
+				   		<th>Time</td>
+				   		<th>Banks</td>
+				   		<th>Pressure (Bar)</td>
+				   		<th>Message</td>
+				</tr>
+				{% for l in log %}
+        		<tr  class="{{l.status}}">
+				   		<td style="vertical-align: middle">{{l.date}}</td>
+				   		<td style="vertical-align: middle">{{l.banks}}</td>
+				   		<td style="vertical-align: middle">{{l.pressure}}</td>
+				   		<td style="vertical-align: middle">{{l.message}}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block body %}
+{{super()}}
+<h1>Steckdosenleisten</h1>
+{{util.flashed_messages()}}
+
+
+    <script type="text/javascript" charset="utf-8">   
+    $(document).ready(function(){
+        var socket = io.connect('192.168.149.128:' + location.port + '/can');
+        $( ".btn" ).click(function(event) {
+                socket.emit('sendButton', {leiste: $(this).attr("leiste"), plug: $(this).attr("plug"), status: $(this).attr("status"), name: $(this).text()});
+                return false;
+        });
+        socket.on('setButton', function(msg) {
+                console.log(msg);
+                $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").attr("status",msg["status"]);
+                if(msg["status"] == "on"){
+                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger");
+                }else{
+                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger");
+                }
+        });
+    });
+    </script>
+
+
+  {% for s in strips %}
+      <div class="block full">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              {{s}}
+            </h3>
+          </div>
+          <div class="panel-body row">
+            {% for p in plugs[s] %}
+              <div class="col-xs-6 col-sm-4 col-lg-2">
+                <div class="block-section text-center">
+                        <button leiste="{{s}}" plug="{{p.id}}" status="{% if p.default %}on{% else %}off{% endif %}" class="
+                        {% if not p.changeable %}disabled{% endif %} 
+                        {% if p.default %}btn-success{% else %}btn-danger{% endif %}
+                        plug_on btn btn-lg btn-block 
+                        ">{{p.name}}</button>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+  {% endfor %}
+
+
+{{strips.strips|safe}}
+{% endblock %}
