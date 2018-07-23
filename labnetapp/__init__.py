@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, json, sys
+import os, json, sys#, queue
 from flask import Flask , render_template, flash
 from flask_appconfig import AppConfig
 from flask_bootstrap import Bootstrap
@@ -9,6 +9,8 @@ app = Flask(__name__)
 AppConfig(app,None)
 Bootstrap(app)
 socketio = SocketIO(app)
+
+#msgQ = queue.Queue()
 
 conf = json.loads(open('config.json').read())
 
@@ -33,13 +35,14 @@ if conf['feature']['com'] :
 	app.config['COM']['baud']			= conf['com']['baud']
 	app.config['COM']['timeout']		= 1
 
-from app import index
-from app import journal
-from app import config
-from app import can_log
-from app import can_handler
-from app import csv_wrapper
-from app import labnet
-from app import keyvalue as kv
+from labnetapp import keyvalue as kv
 
-keyvalue 	= kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
+store = kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
+
+from labnetapp import index
+from labnetapp import journal
+from labnetapp import config
+from labnetapp import can_log
+from labnetapp import can_handler
+from labnetapp import csv_wrapper
+from labnetapp import labnet

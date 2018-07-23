@@ -1,6 +1,6 @@
 import os,serial,time,sys,psutil,threading,redis
 from subprocess import *
-from app import app
+from labnetapp import app
 from datetime import datetime
 from collections import deque
 

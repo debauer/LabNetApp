@@ -2,10 +2,10 @@
 	"main": {
 		"port": "3333",
 		"ip": "192.168.149.128",
-		"folder": "/mnt/hgfs/dispenserApp"
+		"folder": "/mnt/hgfs/LabNetApp"
 	},
 	"feature":{
-		"redis": true,
+		"redis": false,
 		"mpd": true,
 		"configMgmt": false,
 		"canLog": false,

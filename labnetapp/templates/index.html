@@ -7,18 +7,18 @@
 
     <script type="text/javascript" charset="utf-8">   
     $(document).ready(function(){
-        var socket = io.connect('192.168.149.128:' + location.port + '/can');
-        $( ".btn" ).click(function(event) {
+        var socket = io.connect('192.168.149.128:' + location.port + '/labnet');
+        $( ".btn" ).not(".disabled").click(function(event) {
                 socket.emit('sendButton', {leiste: $(this).attr("leiste"), plug: $(this).attr("plug"), status: $(this).attr("status"), name: $(this).text()});
                 return false;
         });
-        socket.on('setButton', function(msg) {
+        socket.on('plugStatus', function(msg) {
                 console.log(msg);
                 $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").attr("status",msg["status"]);
                 if(msg["status"] == "on"){
-                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger");
+                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
                 }else{
-                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger");
+                    $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
                 }
         });
     });
@@ -37,9 +37,11 @@
             {% for p in plugs[s] %}
               <div class="col-xs-6 col-sm-4 col-lg-2">
                 <div class="block-section text-center">
-                        <button leiste="{{s}}" plug="{{p.id}}" status="{% if p.default %}on{% else %}off{% endif %}" class="
+                        <button leiste="{{s}}" plug="{{p.id}}" status="{{p.status}}" class="
                         {% if not p.changeable %}disabled{% endif %} 
-                        {% if p.default %}btn-success{% else %}btn-danger{% endif %}
+                        {% if p.changeable %}
+                            {% if p.status == 'on' %}btn-success{% elif p.status == 'off' %}btn-danger{% endif %}
+                        {% endif %} 
                         plug_on btn btn-lg btn-block 
                         ">{{p.name}}</button>
                 </div>

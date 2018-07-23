@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import os, time
 from flask import Flask, render_template, flash, request, redirect, url_for, session, escape
-from app import app
-from app import csv_wrapper
+from labnetapp import app
+from labnetapp import csv_wrapper
 from os.path import isfile, join
 from operator import itemgetter
 

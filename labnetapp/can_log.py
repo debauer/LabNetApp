@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import  os
 from flask import Flask, render_template, flash, request, redirect, url_for, session, escape
-from app import app, csv_wrapper
+from labnetapp import app, csv_wrapper
 from os import listdir
 from os.path import isfile, join
 from operator import itemgetter
