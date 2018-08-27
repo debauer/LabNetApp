@@ -21,9 +21,10 @@
 
 <script type="text/javascript" charset="utf-8">   
 $(document).ready(function(){
-    var labnet = io.connect('192.168.149.128:' + location.port + '/labnet');
+    var labnet = io.connect('192.168.149.128:' + location.port + '/labnet'); //,{transports:['websocket']});
     $( ".rittal" ).not(".disabled").click(function(event) {
-            labnet.emit('sendButton', {leiste: $(this).attr("leiste"), plug: $(this).attr("plug"), status: $(this).attr("status"), name: $(this).text()});
+            /* send as */
+            labnet.emit('sendButton', {status: $(this).attr("status"), name: $(this).text()});
             return false;
     });
     var mpd = io.connect('192.168.149.128:' + location.port + '/mpd');
@@ -53,11 +54,11 @@ $(document).ready(function(){
     });
     labnet.on('plugStatus', function(msg) {
             console.log(msg);
-            $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").attr("status",msg["status"]);
+            $(".btn[plug='"+msg["plug"]+"']").attr("status",msg["status"]);
             if(msg["status"] == "on"){
-                $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
+                $(".btn[plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
             }else{
-                $(".btn[leiste='"+msg["leiste"]+"'][plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
+                $(".btn[plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
             }
     });
 });
@@ -75,7 +76,8 @@ $(document).ready(function(){
           </button>
           <a class="navbar-brand" href="/">LabNetApp</a>
           <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">dashboard</a></li>
+                <li><a href="/steckdosen">Steckdosen</a></li>
+                <li><a href="/mpd">Musik</a></li>
                 <!--<li><a href="/config">config</a></li>
                 <li><a href="/journal">fill journal</a></li>
                 <li><a href="/log">CAN Bus Log</a></li>-->

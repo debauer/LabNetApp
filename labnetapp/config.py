@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from flask import Flask, render_template, flash, request, redirect, url_for, session, escape
-from labnetapp import app, labnet
+from labnetapp import app
 from werkzeug import secure_filename
 import redis, os
 from os import listdir

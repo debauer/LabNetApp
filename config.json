@@ -9,8 +9,8 @@
 		"mpd": true,
 		"configMgmt": false,
 		"canLog": false,
-		"can": false,
-		"com": false
+		"can": true,
+		"gmusic": true
 	},
 	"can":{
 		"interface":"can1",
@@ -18,8 +18,12 @@
 		"config": "main.json",
 		"logFolder": "can_log"
 	},
-	"com": {
-		"port": "/dev/ttyS10",
-		"baud": "9600"
+	"mpd":{
+		"server":"localhost"
+	},
+	"gmusic":{
+		"server":"192.168.149.128:9999",
+		"playlists":"David_Bauer/temp_playlist/",
+		"mpd_folder": "/srv/public/Nutzer/"
 	}
 }

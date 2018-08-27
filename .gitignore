@@ -16,6 +16,7 @@ build/
 
 # LabNetApp ignores
 app/__pycache__/
-node_config/
+nodeConfig/
 can_log/*
 !can_log/test.csv
+music/
