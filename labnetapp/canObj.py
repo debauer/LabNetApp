@@ -99,12 +99,9 @@ class canObj:
 	def handle_power_hub_message(self):
 		node_id  = (self.arbitrationId & 0x000FF000) >> 12
 		event_id = (self.arbitrationId & 0x00000FFF) >> 0
+		steckdosen_id  = (self.arbitrationId & 0x0000000F) >> 0
 		if event_id <= 0x30 or event_id > 0x39:
 			return
-
-		steckdosen_id = node_id * (event_id - 0x30)
-		#print(steckdosen_id)
-		#print(self.data)
 		dosen = []
 		for i in range(2,8):
 			dosen.append(self.data[i])

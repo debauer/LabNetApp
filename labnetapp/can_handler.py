@@ -51,7 +51,7 @@ def rxToSocket():
 						#print(obj.arbitration()["eventName"])
 						#print(obj.arbitration()["msgType"])
 						adress = obj.handle_power_hub_message()
-						#print(adress)
+						print(adress)
 						plugNr = 1
 						for plug in adress["plugs"]:
 							if plug == 1 or plug == 0:
