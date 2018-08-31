@@ -4,6 +4,7 @@ from labnetapp import app, socketio, store
 import mpd
 import os,serial,time,sys,psutil,threading,redis,random
 from subprocess import *
+from _thread import start_new_thread
 
 #import gevent
 #from gevent import Greenlet
@@ -110,5 +111,4 @@ def mpd():
 def start_threads():
 	#thread_rx  = Greenlet.spawn(status)
 	ping()
-	thread_mpd 			= threading.Thread(target=status)
-	thread_mpd.start()
+	start_new_thread(status,())

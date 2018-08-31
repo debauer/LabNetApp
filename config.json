@@ -1,8 +1,8 @@
 {
 	"main": {
 		"port": "3333",
-		"ip": "192.168.149.128",
-		"folder": "/mnt/hgfs/LabNetApp"
+		"ip": "192.168.1.1",
+		"folder": "/home/LabNetApp"
 	},
 	"feature":{
 		"redis": false,
@@ -19,7 +19,7 @@
 		"logFolder": "can_log"
 	},
 	"mpd":{
-		"server":"localhost"
+		"server":"192.168.1.6"
 	},
 	"gmusic":{
 		"server":"192.168.149.128:9999",

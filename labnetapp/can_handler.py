@@ -18,8 +18,8 @@ msgRX = deque([])
 
 if app.config['FEATURE']['can']:
 	try:
-		#bus = can.interface.Bus(app.config['CAN']['interface'], bustype=app.config['CAN']['type'])
-		bus = can.Bus('ws://192.168.1.11:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
+		bus = can.interface.Bus(app.config['CAN']['interface'], bustype=app.config['CAN']['type'])
+		#bus = can.Bus('ws://192.168.1.11:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
 		#can_buffer = can.BufferedReader()
 		#notifier = can.Notifier(bus, [can_buffer], timeout=0.1)
 	except BaseException as e:

@@ -11,3 +11,4 @@ gevent
 python-mpd2>=1.0.0
 python-can-remote
 gevent-websocket
+greenlet
