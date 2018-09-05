@@ -12,10 +12,8 @@ class canObj:
 	def __init__(self):
 		pass
 
-	def genPlugChangeMsg(self, adr,status):
+	def genPlugChangeMsg(self, adr, status):
 		#logging.debug("Power Dose %s on Leiste %s for hub %s" % (adr["strip"], adr["strip"], adr["hub"]))
-		
-		
 		data = 0x01
 		if status == 'on':
 			data = 0x01

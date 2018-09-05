@@ -8,6 +8,8 @@ from collections import deque
 from _thread import start_new_thread
 import logging, gevent
 from gevent import Greenlet
+from flask import request
+
 
 #import gevent
 #from gevent import Greenlet
@@ -122,9 +124,27 @@ def canTx():
 			connectCan()
 			pass
 
+@app.route('/plug/<id>/power', methods=['POST'])
+def postFoo(id):
+	print(request.data.decode("utf-8"))
+	dataDict = json.loads(request.data.decode("utf-8") )
+	print(id + dataDict["state"])
+	obj = canObj.canObj()
+	msg = obj.genPlugChangeMsg(getPlugAdressByName(id),dataDict["state"])
+	#print(msg)
+	msgTX.append(msg)
+	return "OK"
+	#if status == "on":  
+	#    store.update("rittal_"+message["leiste"]+"_"+message["plug"], "off")
+	#    socketio.emit('plugStatus',{'leiste': message["leiste"],'plug':  message["plug"],'status':  "off"},broadcast=True, namespace='/labnet')
+	#else:
+	#    store.update("rittal_"+message["leiste"]+"_"+message["plug"], "on")
+	#    socketio.emit('plugStatus',{'leiste': message["leiste"],'plug':  message["plug"],'status':  "on"},broadcast=True, namespace='/labnet')
+
+
 
 @socketio.on('sendButton', namespace='/labnet')
-def test_message(message):
+def socketFooo(message):
 	#print(message)
 	obj = canObj.canObj()
 	if message["status"] == "off":

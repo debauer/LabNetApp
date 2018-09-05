@@ -47,3 +47,10 @@ def steckdosen():
     debug = ""
     #print(getAllPlugsJson())
     return render_template('steckdosen.html',strips=getOnlyActiveStripNamesSorted(),plugs=getAllPlugsJson(),debug=debug)
+
+
+@app.route('/config')
+def nodeconfig():
+    f = open("nodeConfig/mainv2.json", 'r').read()
+    #print(getAllPlugsJson())
+    return f

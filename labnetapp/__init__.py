@@ -4,8 +4,10 @@ from flask import Flask , render_template, flash
 from flask_appconfig import AppConfig
 #from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 AppConfig(app,None)
 #Bootstrap(app)
 socketio = SocketIO(app)
@@ -13,6 +15,8 @@ socketio = SocketIO(app)
 #msgQ = queue.Queue()
 
 conf = json.loads(open('config.json').read())
+
+app.config['WTF_CSRF_ENABLED'] = False
 
 # in a real app, these should be configured through Flask-Appconfig
 app.config['SECRET_KEY'] 			= 'devkey'
