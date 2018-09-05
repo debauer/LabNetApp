@@ -27,16 +27,15 @@ def connectCan():
 			bus = can.ThreadSafeBus('ws://192.168.1.11:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
 			#can_buffer = can.BufferedReader()
 			#notifier = can.Notifier(bus, [can_buffer], timeout=0.1)
+			print("CAN bus connected")
 			return True
 		except BaseException as e:
 			#print("CAN bus error: %s" % e)
 			return e
 			#sys.exit(1)
 ret = connectCan()
-if ret:
-	print("CAN bus connected")
-else:
-	print("CAN bus error: %s" % e)
+if isinstance(ret, BaseException):
+	print("CAN bus error: %s" % ret)
 	sys.exit(1)
 
 ### RX #####
@@ -50,10 +49,14 @@ def canRx():
 				msgRX.append(message)
 			else:
 				time.sleep(0.1)
+		#except can.interfaces.remote.protocol.RemoteError as err:
+		#	print("canRx",err)
+		#	pass
 		except Exception as err:
-			print("canRx",err)
-			connectCan()
-			pass
+			if "1006" in str(err):
+				connectCan()
+			else:
+				print("canRx",err)
 
 def rxToSocket():
 	while True:
