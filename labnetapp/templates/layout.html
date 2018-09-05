@@ -21,13 +21,13 @@
 
 <script type="text/javascript" charset="utf-8">   
 $(document).ready(function(){
-    var labnet = io.connect('192.168.1.11:' + location.port + '/labnet'); //,{transports:['websocket']});
+    var labnet = io.connect('192.168.1.6:' + location.port + '/labnet'); //,{transports:['websocket']});
     $( ".rittal" ).not(".disabled").click(function(event) {
             /* send as */
             labnet.emit('sendButton', {status: $(this).attr("status"), name: $(this).text()});
             return false;
     });
-    var mpd = io.connect('192.168.1.11:' + location.port + '/mpd');
+    var mpd = io.connect('192.168.1.6:' + location.port + '/mpd');
     $( ".mpd.next" ).click(function(event) {
             mpd.emit('mpdNext', {});
             return false;

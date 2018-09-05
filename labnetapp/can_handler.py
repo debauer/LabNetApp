@@ -13,34 +13,51 @@ from gevent import Greenlet
 #from gevent import Greenlet
 
 from nodeConfig import *
+
+
 msgTX = deque([])
 msgRX = deque([])
+bus = None
 
-if app.config['FEATURE']['can']:
-	try:
-		bus = can.interface.Bus(app.config['CAN']['interface'], bustype=app.config['CAN']['type'])
-		#bus = can.Bus('ws://192.168.1.11:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
-		#can_buffer = can.BufferedReader()
-		#notifier = can.Notifier(bus, [can_buffer], timeout=0.1)
-	except BaseException as e:
-		print("CAN bus error: %s" % e)
-		sys.exit(1)
-
+def connectCan():
+	global bus
+	if app.config['FEATURE']['can']:
+		try:
+			#bus = can.interface.Bus(app.config['CAN']['interface'], bustype=app.config['CAN']['type'])
+			bus = can.ThreadSafeBus('ws://192.168.1.11:54701/', bustype='remote', bitrate=500000, receive_own_messages=True)
+			#can_buffer = can.BufferedReader()
+			#notifier = can.Notifier(bus, [can_buffer], timeout=0.1)
+			return True
+		except BaseException as e:
+			#print("CAN bus error: %s" % e)
+			return e
+			#sys.exit(1)
+ret = connectCan()
+if ret:
+	print("CAN bus connected")
+else:
+	print("CAN bus error: %s" % e)
+	sys.exit(1)
 
 ### RX #####
 
 def canRx():
 	while True:
-		time.sleep(0.1)
-		message = bus.recv(1)
-		#print(message)
-		if message is not None:
-			msgRX.append(message)
+		try:
+			message = bus.recv(1)
+			#print(message)
+			if message is not None:
+				msgRX.append(message)
+			else:
+				time.sleep(0.1)
+		except Exception as err:
+			print("canRx",err)
+			connectCan()
+			pass
 
 def rxToSocket():
 	while True:
 		try:
-			gevent.sleep(0.1)
 			if len(msgRX) > 0:
 				message = msgRX.pop()
 				if message is not None:
@@ -57,19 +74,29 @@ def rxToSocket():
 						plugNr = 1
 						for plug in adress["plugs"]:
 							if plug == 1 or plug == 0:
-								if plug == 1:
-									status = "on"
-								elif plug == 0:
-									status = "off"
+
 								plugName = getPlugNameByAdress(plugNr,adress["strip"],adress["node"])
 								stripName = getStripNameByAdress(adress["strip"],adress["node"])
+								if plug == 1:
+									status = "on"
+									if plugName in plugs.keys():
+										plugs[plugName].setOn()
+								elif plug == 0:
+									status = "off"
+									if plugName in plugs.keys():
+										plugs[plugName].setOff()
 								if plugName:
 									#print("found: " + plugName + " " + stripName)
 									#print({'leiste': stripName,'plug':  plugName,'status':  status})
 									socketio.emit('plugStatus',{'leiste': stripName,'plug':  plugName,'status':  status},broadcast=True, namespace='/labnet')		
 							plugNr += 1	
+			else:
+				gevent.sleep(0.1)
 		except IndexError as err:
 			print(err)
+			pass
+		except Exception as err:
+			print("rxToSocket", err)
 			pass
 	
 ### TX #####
@@ -87,6 +114,11 @@ def canTx():
 			#print("Sending CAN message with arbitration id %s and data %s" % (format(obj["id"], '#04x'), hexlify(obj["data"])))
 		except IndexError:
 			pass
+		except Exception as err:
+			print("canTx", err)
+			connectCan()
+			pass
+
 
 @socketio.on('sendButton', namespace='/labnet')
 def test_message(message):
@@ -114,8 +146,6 @@ if app.config['FEATURE']['can']:
 		#thread_rx.daemon 	= False
 		#thread_rx.start()
 
-
-
 		# working who sends received can signals to frontend
 		thread_rxToSocket = Greenlet.spawn(rxToSocket )
 		#thread_rx 			= threading.Thread(target=rxToSocket)
@@ -125,5 +155,11 @@ if app.config['FEATURE']['can']:
 		# real Threads!!! No Frontend stuff here!
 		start_new_thread(canRx,())
 		start_new_thread(canTx,())
-		#logging.getLogger('socketio').setLevel(logging.DEBUG)
-		#logging.getLogger('engineio').setLevel(logging.DEBUG)
+		time.sleep(0.3)
+
+		#  EVENT_GlOBAL_RITTAL_UPDATE 0x000001
+		#  TT_EVENT_GLOBAL   	0x00
+		bus.send(can.Message(extended_id=True, arbitration_id=0x00000001, data=b"ASDF1234")) 
+
+		logging.getLogger('socketio').setLevel(logging.DEBUG)
+		logging.getLogger('engineio').setLevel(logging.DEBUG)

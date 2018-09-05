@@ -1,0 +1,9 @@
+[Unit]
+Description=Can to Socket Bridge
+After=network.target
+[Service]
+Type=simple
+User=root
+ExecStart= /home/can2socket.sh
+[Install]
+WantedBy=multi-user.target
