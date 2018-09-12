@@ -110,7 +110,7 @@ def rxToSocket():
 									#print("found: " + plugName + " " + stripName)
 									#print({'leiste': stripName,'plug':  plugName,'status':  status})
 									print({'leiste': strip_id, 'plug':  plug_id,'status':  status})
-									socketio.emit('plugStatus', {'leiste': strip_id, 'plug':  plug_id,'status':  status}, broadcast=True, namespace='/labnet')
+									socketio.emit('plugStatus', {'leiste': strip_id, 'plug':  plug_id,'status':  status}, broadcast=True)
 									
 							plug_nr += 1
 			else:
@@ -163,7 +163,7 @@ def postFoo(id):
 	#    socketio.emit('plugStatus',{'leiste': message["leiste"],'plug':  message["plug"],'status':  "on"},broadcast=True, namespace='/labnet')
 
 
-@socketio.on('sendButton', namespace='/labnet')
+@socketio.on('sendButton')
 def socketFooo(message):
 	#print(message)
 	obj = canObj.canObj()
