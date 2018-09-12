@@ -75,12 +75,13 @@ def canRx():
 
 
 def rxToSocket():
+	
 	while True:
+		dbg = ""
 		try:
 			if len(msgRX) > 0:
 				message = msgRX.pop()
 				if message is not None:
-					#print(message)
 					obj = canObj.canObj()
 					obj.readMsg(message)
 					if obj.arbitration()["eventName"] == "rittal status":
@@ -93,7 +94,6 @@ def rxToSocket():
 						plug_nr = 1
 						for plug_address in adress["plugAddresses"]:
 							if plug_address == 1 or plug_address == 0:
-
 								plug_id = get_plug_id_by_adress(
 									plug_nr, adress["stripAddress"], adress["nodeAddress"])
 								strip_id = get_strip_id_by_adress(
@@ -109,8 +109,9 @@ def rxToSocket():
 								if plug_id:
 									#print("found: " + plugName + " " + stripName)
 									#print({'leiste': stripName,'plug':  plugName,'status':  status})
-									socketio.emit('plugStatus', {'leiste': strip_id, 'plug':  plug_id,
-                                                                            'status':  status}, broadcast=True, namespace='/labnet')
+									print({'leiste': strip_id, 'plug':  plug_id,'status':  status})
+									socketio.emit('plugStatus', {'leiste': strip_id, 'plug':  plug_id,'status':  status}, broadcast=True, namespace='/labnet')
+									
 							plug_nr += 1
 			else:
 				gevent.sleep(0.1)
@@ -118,7 +119,7 @@ def rxToSocket():
 			print(err)
 			pass
 		except Exception as err:
-			print("rxToSocket", err)
+			print("rxToSocket", err, dbg)
 			pass
 
 ### TX #####

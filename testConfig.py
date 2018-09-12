@@ -25,6 +25,7 @@ def getStripNamesSorted():
     listOfStrips = []
     for n in nodes:
         stripList = nodes[n].getStripNames()
+        print(stripList)
         for s in stripList:
             listOfStrips.append(s)
     listOfStrips.sort()
@@ -40,11 +41,11 @@ def getAllPlugsJson():
     return data
 
 
-load_definition_file("nodeConfig/main.json")
+load_definition_file("nodeConfig/mainv2.json")
 
 
 print()
 print(getOnlyActiveStripNamesSorted())
 
-#print(getStripNamesSorted())
-#print(getAllPlugsJson()['14-door'])
+print(getStripNamesSorted())
+print(getAllPlugsJson()['14-door'])
