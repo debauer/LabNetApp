@@ -5,7 +5,7 @@ def long_to_bytes(val):
 	result = []
 
 	for i in range(8):
-		result.insert(0, (val & (0xFF << i*8)) >> i*8)	
+		result.insert(0, (val & (0xFF << i*8)) >> i*8)
 	return bytearray(result)
 
 class canObj:
@@ -13,7 +13,7 @@ class canObj:
 		pass
 
 	def genPlugChangeMsg(self, adr, status):
-		#logging.debug("Power Dose %s on Leiste %s for hub %s" % (adr["strip"], adr["strip"], adr["hub"]))
+		#logging.debug("Power Dose %s on Leiste %s for hub %s" % (adr["stripAddress"], adr["stripAddress"], adr["hub"]))
 		data = 0x01
 		if status == 'on':
 			data = 0x01
@@ -21,13 +21,13 @@ class canObj:
 			data = 0x00
 		if not data == 0x02:
 			arbitration_id = 0x01F00000
-			arbitration_id = arbitration_id + (adr["node"] << 12) + 0x30 + adr["strip"]
-	
+			arbitration_id = arbitration_id + (adr["nodeAddress"] << 12) + 0x30 + adr["stripAddress"]
+
 			status = 0x0000
-			for i in range(6-adr["plug"]):
+			for i in range(6-adr["plugAddress"]):
 				status = status + (0x02 << i * 8)
-			status = status + (data << (6 - adr["plug"]) * 8)
-			for i in range(adr["plug"]-1):
+			status = status + (data << (6 - adr["plugAddress"]) * 8)
+			for i in range(adr["plugAddress"]-1):
 				status = status + (0x02 << (5 - i) * 8)
 		return {"data": long_to_bytes(status), "id": arbitration_id}
 
@@ -44,7 +44,7 @@ class canObj:
 			self.nodeTypeName = "Basis"
 		elif self.nodeType == 0xF:  # Power-Hub
 			self.nodeTypeName = "Power-Hub"
-		else:	
+		else:
 			self.nodeTypeName = "Unknown"
 		self.msgType = (self.arbitrationId & 0xFF000000) >> 24
 
@@ -95,15 +95,15 @@ class canObj:
 		return dose
 
 	def handle_power_hub_message(self):
-		node_id  = (self.arbitrationId & 0x000FF000) >> 12
-		event_id = (self.arbitrationId & 0x00000FFF) >> 0
-		steckdosen_id  = (self.arbitrationId & 0x0000000F) >> 0
-		if event_id <= 0x30 or event_id > 0x39:
+		node_address  = (self.arbitrationId & 0x000FF000) >> 12
+		event_address = (self.arbitrationId & 0x00000FFF) >> 0
+		strip_address  = (self.arbitrationId & 0x0000000F) >> 0
+		if event_address <= 0x30 or event_address > 0x39:
 			return
-		dosen = []
+		plugAddresses = []
 		for i in range(2,8):
-			dosen.append(self.data[i])
-		return {"plugs": dosen, "strip": steckdosen_id, "node": node_id}
+			plugAddresses.append(self.data[i])
+		return {"plugAddresses": plugAddresses, "stripAddress": strip_address, "nodeAddress": node_address}
 
 		#logging.debug("CAN Payload: %s" % format(data, '#02x'))
 
@@ -115,7 +115,7 @@ class canObj:
 		#logging.debug("min amp %s" % min_amp)
 		#logging.debug("max amp %s" % max_amp)
 
-		
+
 
 		#for i in range(6):
 		#	topic = create_mqtt_stat_topic(steckdosen_id, i + 1)

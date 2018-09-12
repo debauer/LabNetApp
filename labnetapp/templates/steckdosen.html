@@ -14,13 +14,13 @@
             {% for plug in plugs[stripname] %}
               <div class="col-xs-6 col-sm-4 col-lg-2">
                 <div class="block-section text-center">
-                        <button leiste="{{stripname}}" plug="{{plug.name}}" status="{{plug.status}}" class="
+                        <button leiste="{{stripname}}" plug="{{plug.id}}" status="{{plug.status}}" class="
                         {% if not plug.changeable %}disabled{% endif %} 
                         {% if plug.changeable %}
                             {% if plug.status == 'on' %}btn-success{% elif plug.status == 'off' %}btn-danger{% endif %}
                         {% endif %} 
                         plug_on btn btn-lg btn-block rittal
-                        ">{{plug.name}}</button>
+                        ">{{plug.id}}</button>
                 </div>
               </div>
             {% endfor %}

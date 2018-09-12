@@ -16,9 +16,9 @@ def getOnlyActiveStripNamesSorted():
     st = []
     data = getAllPlugsJson()
     for plugName in plugs:
-        if not plugs[plugName].getStrip() in st:
+        if not plugs[plugName].getStripId() in st:
             #pass
-            st.append( plugs[plugName].getStrip())
+            st.append( plugs[plugName].getStripId())
     return st
 
 def getStripNamesSorted():
@@ -26,21 +26,21 @@ def getStripNamesSorted():
     for n in nodes:
         stripList = nodes[n].getStripNames()
         for s in stripList:
-            listOfStrips.append(s) 
+            listOfStrips.append(s)
     listOfStrips.sort()
-    return listOfStrips  
+    return listOfStrips
 
 def getAllPlugsJson():
     data = {}
     for plugName in plugs:
-        stripName = plugs[plugName].getStrip()
+        stripName = plugs[plugName].getStripId()
         if not stripName in data.keys():
             data[stripName] = []
         data[stripName] = plugs[plugName].getData()
     return data
 
 
-buildUpObjects("nodeConfig/main.json")
+load_definition_file("nodeConfig/main.json")
 
 
 print()

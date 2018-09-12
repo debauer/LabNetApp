@@ -24,7 +24,13 @@ $(document).ready(function(){
     var labnet = io.connect('192.168.1.6:' + location.port + '/labnet'); //,{transports:['websocket']});
     $( ".rittal" ).not(".disabled").click(function(event) {
             /* send as */
-            labnet.emit('sendButton', {status: $(this).attr("status"), name: $(this).text()});
+   	    var status = $(this).attr("status");
+	    if(status == "on"){
+		status = "off"	;	    
+	    }else{
+		status = "on";
+	    }
+            labnet.emit('sendButton', {status: $(this).attr("status"), id: $(this).text()});
             return false;
     });
     var mpd = io.connect('192.168.1.6:' + location.port + '/mpd');
