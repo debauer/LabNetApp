@@ -34,8 +34,8 @@ app.config['NODE_CONFIG'] = conf['main']['folder'] + "/node_config"  + "/" + con
 from labnetapp import keyvalue as kv
 store = kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
 
-from labnetapp import index
-from labnetapp import config
+from labnetapp import base
+
 if app.config['FEATURE']["can"]:
 	app.config['CAN'] = conf['can']
 	from labnetapp import canObj
@@ -50,6 +50,6 @@ if app.config['FEATURE']["mpd"]:
 	if app.config['FEATURE']["gmusic"]:
 		app.config['GMUSIC'] = conf['gmusic']
 		from labnetapp import gmusic
-from labnetapp import steckdosen
+
 
 
