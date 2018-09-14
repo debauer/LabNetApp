@@ -8,6 +8,17 @@ import os, json
 
 from nodeConfig import *
 
+def getOnlyActiveStripNamesSortedJson():
+    data = {}
+    for plug_id in plugs:
+        if not plugs[plug_id].getStripId() in data.keys():
+            #pass
+            id = plugs[plug_id].getStripId()
+            data[id] = {}
+            data[id]["stripId"] = strips[id].getId()
+            data[id]["displayText"] = strips[id].getData()["displayText"]    
+    return data
+
 def getOnlyActiveStripNamesSorted():
     st = []
     for plug_id in plugs:
@@ -15,6 +26,17 @@ def getOnlyActiveStripNamesSorted():
             #pass
             st.append(plugs[plug_id].getStripId())
     return st
+
+def getStripNamesSortedJson():
+    data = {}
+    for n in nodes:
+        strip_list = nodes[n].getStripNames()
+        for s in strip_list:
+            if not s in data.keys():
+                data[s] = {}
+                data[s]["stripId"] = strips[s].getId()
+                data[s]["displayText"] = strips[s].getData()["displayText"]
+    return data 
 
 def getStripNamesSorted():
     list_of_strips = []
@@ -44,8 +66,8 @@ def getAllPlugsJson():
 @app.route('/steckdosen')
 def steckdosen():
     debug = ""
-    #print(getAllPlugsJson())
-    return render_template('steckdosen.html',strips=getOnlyActiveStripNamesSorted(),plugs=getAllPlugsJson(),debug=debug)
+    print(getOnlyActiveStripNamesSortedJson())
+    return render_template('steckdosen.html',strips=getOnlyActiveStripNamesSortedJson(),plugs=getAllPlugsJson(),debug=debug)
 
 
 @app.route('/config')

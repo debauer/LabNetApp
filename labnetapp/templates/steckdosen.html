@@ -7,7 +7,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              {{stripname}}
+              {{strips[stripname].displayText}}
             </h3>
           </div>
           <div class="panel-body row">
@@ -20,7 +20,7 @@
                             {% if plug.status == 'on' %}btn-success{% elif plug.status == 'off' %}btn-danger{% endif %}
                         {% endif %} 
                         plug_on btn btn-lg btn-block rittal
-                        ">{{plug.id}}</button>
+                        ">{{plug.displayText}}</button>
                 </div>
               </div>
             {% endfor %}

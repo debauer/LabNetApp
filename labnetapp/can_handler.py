@@ -30,6 +30,18 @@ msgRX = deque([])
 bus = None
 
 
+def getAllPlugsJson():
+    data = {}
+    for plug_id in plugs:
+        strip_id = plugs[plug_id].getStripId()
+        if not strip_id in data.keys():
+            data[strip_id] = []
+            #plugs[plugId].getData()
+        data[strip_id].append(plugs[plug_id].getData())
+        sorted(data[strip_id], key=lambda x:sorted(x.keys()))
+    return data
+
+
 def connectCan():
 	global bus
 	if app.config['FEATURE']['can']:
@@ -110,7 +122,7 @@ def rxToSocket():
 									#print("found: " + plugName + " " + stripName)
 									#print({'leiste': stripName,'plug':  plugName,'status':  status})
 									print({'leiste': strip_id, 'plug':  plug_id,'status':  status})
-									socketio.emit('plugStatus', {'leiste': strip_id, 'plug':  plug_id,'status':  status}, broadcast=True)
+									socketio.emit('plugStatus', { 'plugId':  plug_id,'status':  status}, broadcast=True)
 									
 							plug_nr += 1
 			else:
@@ -162,16 +174,23 @@ def postFoo(id):
 	#    store.update("rittal_"+message["leiste"]+"_"+message["plug"], "on")
 	#    socketio.emit('plugStatus',{'leiste': message["leiste"],'plug':  message["plug"],'status':  "on"},broadcast=True, namespace='/labnet')
 
+@socketio.on('connect')
+def onConnect():
+	socketio.emit('plugStatusList', getAllPlugsJson() , broadcast=True)
+	
+@socketio.on('fetchPlugList')
+def onConnect():
+	socketio.emit('plugStatusList', getAllPlugsJson() , broadcast=True)
 
-@socketio.on('sendButton')
-def socketFooo(message):
+@socketio.on('setPlugPower')
+def setPlugPower(message):
 	#print(message)
 	obj = canObj.canObj()
 	if message["status"] == "off":
 		newStatus = "on"
 	else:
 		newStatus = "off"
-	msg = obj.genPlugChangeMsg(get_plug_adress_by_id(message["id"]), newStatus)
+	msg = obj.genPlugChangeMsg(get_plug_adress_by_id(message["plugId"]), newStatus)
 	#print(msg)
 	msgTX.append(msg)
 	#if message["status"] == "on":

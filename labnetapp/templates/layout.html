@@ -30,7 +30,7 @@ $(document).ready(function(){
 	    }else{
 		status = "on";
 	    }
-            labnet.emit('sendButton', {status: $(this).attr("status"), id: $(this).text()});
+            labnet.emit('setPlugPower', {status: $(this).attr("status"), plugId: $(this).attr("plug")});
             return false;
     });
     var mpd = io.connect('192.168.1.6:' + location.port + '/mpd');
@@ -60,11 +60,11 @@ $(document).ready(function(){
     });
     labnet.on('plugStatus', function(msg) {
             console.log(msg);
-            $(".btn[plug='"+msg["plug"]+"']").attr("status",msg["status"]);
+            $(".btn[plug='"+msg["plugId"]+"']").attr("status",msg["status"]);
             if(msg["status"] == "on"){
-                $(".btn[plug='"+msg["plug"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
+                $(".btn[plug='"+msg["plugId"]+"']").addClass("btn-success").removeClass("btn-danger").removeClass("btn-warning");
             }else{
-                $(".btn[plug='"+msg["plug"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
+                $(".btn[plug='"+msg["plugId"]+"']").removeClass("btn-success").addClass("btn-danger").removeClass("btn-warning");
             }
     });
 });
