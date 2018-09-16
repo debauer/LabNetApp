@@ -9,16 +9,15 @@
             <h3 class="panel-title">
               {{strips[stripname].displayText}}
             </h3>
+              {{strips[stripname].location}}
           </div>
           <div class="panel-body row">
             {% for plug in plugs[stripname] %}
               <div class="col-xs-6 col-sm-4 col-lg-2">
                 <div class="block-section text-center">
-                        <button leiste="{{stripname}}" plug="{{plug.id}}" status="{{plug.status}}" class="
+                        <button type="button" data-toggle="tooltip" leiste="{{stripname}}" plug="{{plug.id}}" status="{{plug.status}}" data-placement="bottom" title="{{plug.description}}" class="
                         {% if not plug.changeable %}disabled{% endif %} 
-                        {% if plug.changeable %}
-                            {% if plug.status == 'on' %}btn-success{% elif plug.status == 'off' %}btn-danger{% endif %}
-                        {% endif %} 
+                        {% if plug.status == 'on' %}btn-success{% elif plug.status == 'off' %}btn-danger{% endif %}
                         plug_on btn btn-lg btn-block rittal
                         ">{{plug.displayText}}</button>
                 </div>
@@ -32,3 +31,7 @@
 
 {{strips.strips|safe}}
 {% endblock %}
+
+<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+  Tooltip on top
+</button>

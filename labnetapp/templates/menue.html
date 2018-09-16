@@ -1,10 +1,26 @@
+<script type="text/javascript" charset="utf-8">   
+  console.out("menue.html");
+$(document).ready(function(){
+    console.out("menue.html");
+    if(window.location.href.indexOf("steckdosen") > -1) {
+       console.out("menue.html if");
+       $(".nav_item_steckdosen").addClass("active");
+       $(".nav_item").removeClass("active");
+    }else{
+       console.out("menue.html else")
+       $(".nav_item").addClass("active");
+       $(".nav_item_steckdosen").removeClass("active");    
+    }
+}
+</script>
+
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="/">LabNetApp</a>
         </div>
         <ul class="nav navbar-nav">
-          <li ><a href="/steckdosen">Steckdosen</a></li>
+          <li class="nav_item nav_item_steckdosen active"><a href="/steckdosen">Steckdosen</a></li>
           <!--<li ><a href="/mpd">Musik</a></li>-->
         </ul>
       </div>

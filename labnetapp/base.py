@@ -26,7 +26,8 @@ def getOnlyActiveStripNamesSortedJson():
             id = plugs[plug_id].getStripId()
             data[id] = {}
             data[id]["stripId"] = strips[id].getId()
-            data[id]["displayText"] = strips[id].getData()["displayText"]    
+            data[id]["displayText"] = strips[id].getData()["displayText"]  
+            data[id]["location"] = strips[id].getData()["location"]  
     return data
 
 def getOnlyActiveStripNamesSorted():
@@ -46,6 +47,7 @@ def getStripNamesSortedJson():
                 data[s] = {}
                 data[s]["stripId"] = strips[s].getId()
                 data[s]["displayText"] = strips[s].getData()["displayText"]
+                data[s]["location"] = strips[s].getData()["location"]
     return data 
 
 def getStripNamesSorted():
@@ -272,8 +274,9 @@ if isinstance(ret, BaseException):
     sys.exit(1)
 
 if app.config['FEATURE']['can']:
-    loadConfig()
+    
     def start_threads():
+        loadConfig()
         #thread_rx  = Greenlet.spawn(canRx)
         #thread_tx = Greenlet.spawn(canTx)
         #thread_rx          = threading.Thread(target=canRx)
