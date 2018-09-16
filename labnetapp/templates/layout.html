@@ -71,30 +71,7 @@ $(document).ready(function(){
 </script>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">LabNetApp</a>
-          <ul class="nav navbar-nav navbar-right">
-                <li><a href="/steckdosen">Steckdosen</a></li>
-                <li><a href="/mpd">Musik</a></li>
-                <!--<li><a href="/config">config</a></li>
-                <li><a href="/journal">fill journal</a></li>
-                <li><a href="/log">CAN Bus Log</a></li>-->
-          </ul>
-        </div>
-        <div class="navbar-collapse collapse">
-          
-        </div>
-      </div>
-    </div>
-
+{% include "menue.html" %}
     <div class="container-fluid">
       <div class="row">
         <!--<div class="col-sm-3 col-md-2 sidebar">
@@ -112,6 +89,6 @@ $(document).ready(function(){
         </div>
       </div>
     </div>
-{% include "mpd_toolbar.html" %}
+{% include "mpdToolbar.html" %}
 </body>
 </html>

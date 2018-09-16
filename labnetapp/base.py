@@ -1,10 +1,16 @@
 #!/usr/bin/python
+
+import os, json, sys, can, time, gevent, logging
 from flask import Flask, render_template, flash, request, redirect, url_for, session, escape
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
-from labnetapp import app, socketio, store
+from labnetapp import app, socketio, canObj
 from os import listdir
 from os.path import isfile, join
-import os, json
+from collections import deque
+from _thread import start_new_thread
+from binascii import unhexlify, hexlify
+from gevent import Greenlet
+from flask import request
 
 from nodeConfig import *
 
@@ -174,6 +180,7 @@ def canTx():
             connectCan()
             pass
 
+# API
 
 @app.route('/plug/<id>/power', methods=['POST'])
 def postFoo(id):
@@ -218,23 +225,29 @@ def setPlugPower(message):
     #    store.update("rittal_"+message["leiste"]+"_"+message["plug"], "on")
     #    socketio.emit('plugStatus',{'leiste': message["leiste"],'plug':  message["plug"],'status':  "on"},broadcast=True, namespace='/labnet')
 
+# APP 
 # /steckdosen
-# status der Steckdosen kommt aus KeyValue
-# wenn kein status vorhanden sind sie grau
-# beim bootup der application sollte an alle nodes ein "gib mir mal deine steckdosen stati pls" gesendet werden.
-# Dann ist wenige sekunden nach startup die app aktualisiert.
 @app.route('/steckdosen')
 def steckdosen():
     debug = ""
     print(getOnlyActiveStripNamesSortedJson())
-    return render_template('steckdosen.html',strips=getOnlyActiveStripNamesSortedJson(),plugs=getAllPlugsJson(),debug=debug)
+    return render_template('powerplugsOverview.html',strips=getOnlyActiveStripNamesSortedJson(),plugs=getAllPlugsJson(),debug=debug)
 
-
+# API
+# returns the complete labnet config file 
 @app.route('/config')
-def nodeconfig():
+def nodeConfig():
     f = open("nodeConfig/mainv2.json", 'r').read()
     #print(getAllPlugsJson())
     return f
+
+# API
+# reloads config
+@app.route('/configreload')
+def nodeConfigReload():
+    loadConfig()
+    reqRittalStatusFromAll()
+    return "OK"
 
 
 @app.route('/', methods=('GET', 'POST'))
@@ -242,6 +255,16 @@ def nodeconfig():
 def index():
     return render_template('index.html')
 
+def reqRittalStatusFromAll():
+    #  EVENT_GlOBAL_RITTAL_UPDATE 0x000001
+    #  TT_EVENT_GLOBAL      0x00
+    bus.send(can.Message(extended_id=True, arbitration_id=0x00000001, data=b"ASDF1234"))
+
+def loadConfig():
+    print("loadConfig: destroyObjects()")
+    destroyObjects()
+    print("loadConfig: load_definition_file(\"nodeConfig/mainv2.json\")")
+    load_definition_file("nodeConfig/mainv2.json")
 
 ret = connectCan()
 if isinstance(ret, BaseException):
@@ -249,6 +272,7 @@ if isinstance(ret, BaseException):
     sys.exit(1)
 
 if app.config['FEATURE']['can']:
+    loadConfig()
     def start_threads():
         #thread_rx  = Greenlet.spawn(canRx)
         #thread_tx = Greenlet.spawn(canTx)
@@ -267,10 +291,7 @@ if app.config['FEATURE']['can']:
         start_new_thread(canTx, ())
         time.sleep(0.3)
 
-        #  EVENT_GlOBAL_RITTAL_UPDATE 0x000001
-        #  TT_EVENT_GLOBAL      0x00
-        bus.send(can.Message(extended_id=True,
-                       arbitration_id=0x00000001, data=b"ASDF1234"))
+        reqRittalStatusFromAll()
 
         logging.getLogger('socketio').setLevel(logging.DEBUG)
         logging.getLogger('engineio').setLevel(logging.DEBUG)

@@ -1,3 +1,5 @@
+# <!-- NOT IN USAGE UNTIL NOW!!! d.bauer -->
+
 #!/usr/bin/env python3
 import csv
 import redis, os

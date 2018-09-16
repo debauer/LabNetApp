@@ -31,15 +31,14 @@ app.config['IP']					= conf["main"]['ip']
 
 app.config['NODE_CONFIG'] = conf['main']['folder'] + "/node_config"  + "/" + conf["can"]['config']
 
-from labnetapp import keyvalue as kv
-store = kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
+#from labnetapp import keyvalue as kv
+#store = kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
 
 from labnetapp import base
 
 if app.config['FEATURE']["can"]:
 	app.config['CAN'] = conf['can']
 	from labnetapp import canObj
-	from labnetapp import can_handler
 	if app.config['FEATURE']["canLog"]:
 		app.config['CAN_LOG_FOLDER'] = conf['main']['folder'] + "/" + conf['can']['logFolder']
 		from labnetapp import can_log
