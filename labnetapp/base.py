@@ -97,7 +97,7 @@ def canRx():
     while True:
         try:
             message = bus.recv(1)
-            #print(message)
+#            print(message)
             if message is not None:
                 msgRX.append(message)
             else:
@@ -107,6 +107,7 @@ def canRx():
         #   pass
         except Exception as err:
             if "1006" in str(err):
+#                print("canRX 1006")
                 connectCan()
             else:
                 print("canRx", err)
@@ -154,7 +155,7 @@ def rxToSocket():
             else:
                 gevent.sleep(0.1)
         except IndexError as err:
-            print(err)
+#            print("indexerror:" + err)
             pass
         except Exception as err:
             print("rxToSocket", err, dbg)
@@ -176,6 +177,7 @@ def canTx():
                             arbitration_id=obj["id"], data=obj["data"]))
             #print("Sending CAN message with arbitration id %s and data %s" % (format(obj["id"], '#04x'), hexlify(obj["data"])))
         except IndexError:
+#            print("canTx: indexError")
             pass
         except Exception as err:
             print("canTx", err)
@@ -296,5 +298,5 @@ if app.config['FEATURE']['can']:
 
         reqRittalStatusFromAll()
 
-        logging.getLogger('socketio').setLevel(logging.DEBUG)
-        logging.getLogger('engineio').setLevel(logging.DEBUG)
+ #       logging.getLogger('socketio').setLevel(logging.DEBUG)
+ #       logging.getLogger('engineio').setLevel(logging.DEBUG)
