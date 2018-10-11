@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3 -u
 from labnetapp import app, socketio, base, mpd
 import os
 from flask_socketio import SocketIO

@@ -1,9 +1,17 @@
 [Unit]
-Description=Can to Socket Bridge
+Description=LabNetApp
 After=network.target
 [Service]
 Type=simple
-User=root
-ExecStart= /home/can2socket.sh
+User=labnet
+Group=labnet
+WorkingDirectory=/home/labnet/LabNetApp/
+ExecStartPre=/home/labnet/LabNetApp/restartBridgePi.sh
+ExecStart=/home/labnet/LabNetApp/main.py
+SyslogIdentifier=labnet
+StandardOutput=syslog
+StandardError=syslog
+Restart=always
+RestartSec=30
 [Install]
 WantedBy=multi-user.target

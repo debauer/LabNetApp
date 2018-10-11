@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os, json, sys, can, time, gevent, logging
+import os, json, sys, can, time, gevent, logging, syslog
 from flask import Flask, render_template, flash, request, redirect, url_for, session, escape
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
 from labnetapp import app, socketio, canObj
@@ -13,6 +13,9 @@ from gevent import Greenlet
 from flask import request
 
 from nodeConfig import *
+
+def print (asd):
+	syslog.syslog(str(asd))
 
 msgTX = deque([])
 msgRX = deque([])
@@ -110,7 +113,7 @@ def canRx():
 #                print("canRX 1006")
                 connectCan()
             else:
-                print("canRx", err)
+                print("canRx" + str( err))
 
 
 def rxToSocket():
@@ -129,7 +132,7 @@ def rxToSocket():
                         #print(obj.arbitration()["eventName"])
                         #print(obj.arbitration()["msgType"])
                         adress = obj.handle_power_hub_message()
-                        #print(adress)
+                        print(adress)
                         plug_nr = 1
                         for plug_address in adress["plugAddresses"]:
                             if plug_address == 1 or plug_address == 0:
@@ -158,7 +161,7 @@ def rxToSocket():
 #            print("indexerror:" + err)
             pass
         except Exception as err:
-            print("rxToSocket", err, dbg)
+            print("rxToSocket" + " " + str(err) + " " +str(dbg))
             pass
 
 ### TX #####
@@ -180,7 +183,7 @@ def canTx():
 #            print("canTx: indexError")
             pass
         except Exception as err:
-            print("canTx", err)
+            print("canTx " + str(err))
             connectCan()
             pass
 
