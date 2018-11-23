@@ -39,16 +39,16 @@ from labnetapp import base
 if app.config['FEATURE']["can"]:
 	app.config['CAN'] = conf['can']
 	from labnetapp import canObj
-	if app.config['FEATURE']["canLog"]:
-		app.config['CAN_LOG_FOLDER'] = conf['main']['folder'] + "/" + conf['can']['logFolder']
-		from labnetapp import can_log
+#	if app.config['FEATURE']["canLog"]:
+#		app.config['CAN_LOG_FOLDER'] = conf['main']['folder'] + "/" + conf['can']['logFolder']
+#		from labnetapp import can_log
 
-if app.config['FEATURE']["mpd"]:
-	app.config['MPD'] = conf['mpd']
-	from labnetapp import mpd
-	if app.config['FEATURE']["gmusic"]:
-		app.config['GMUSIC'] = conf['gmusic']
-		from labnetapp import gmusic
+#if app.config['FEATURE']["mpd"]:
+#	app.config['MPD'] = conf['mpd']
+#	from labnetapp import mpd
+#	if app.config['FEATURE']["gmusic"]:
+#		app.config['GMUSIC'] = conf['gmusic']
+#		from labnetapp import gmusic
 
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os, json, sys, can, time, gevent, logging, syslog
+import os, json, sys, can, time, gevent, logging, syslog, prctl
 from flask import Flask, render_template, flash, request, redirect, url_for, session, escape
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
 from labnetapp import app, socketio, canObj
@@ -97,6 +97,7 @@ def connectCan():
 
 
 def canRx():
+    prctl.set_name("canRx")
     while True:
         try:
             message = bus.recv(1)
@@ -117,7 +118,7 @@ def canRx():
 
 
 def rxToSocket():
-    
+    prctl.set_name("rxToSocket")
     while True:
         dbg = ""
         try:
@@ -168,6 +169,7 @@ def rxToSocket():
 
 
 def canTx():
+    prctl.set_name("canTx")
     while True:
         time.sleep(0.1)
         try:
@@ -279,7 +281,6 @@ if isinstance(ret, BaseException):
     sys.exit(1)
 
 if app.config['FEATURE']['can']:
-    
     def start_threads():
         loadConfig()
         #thread_rx  = Greenlet.spawn(canRx)
@@ -301,5 +302,11 @@ if app.config['FEATURE']['can']:
 
         reqRittalStatusFromAll()
 
- #       logging.getLogger('socketio').setLevel(logging.DEBUG)
- #       logging.getLogger('engineio').setLevel(logging.DEBUG)
+#        logging.getLogger('socketio').setLevel(logging.DEBUG)
+#        logging.getLogger('engineio').setLevel(logging.DEBUG)
+#        logging.getLogger('gevent').setLevel(logging.DEBUG)
+#        ll = logging.getLogger().manager.loggerDict.keys()
+#        for l in ll:
+#            print("set log of " + l + " on DEBUG")
+#           logging.getLogger(l).setLevel(logging.DEBUG)
+
