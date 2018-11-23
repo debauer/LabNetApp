@@ -1,6 +1,7 @@
 flask<1.0.0
 flask_appconfig
 flask_bootstrap>=3.3.7.1
+flask_cors
 redis>=2.10.6
 serial>=0.0.67
 psutil>=5.4.6
@@ -12,4 +13,4 @@ python-mpd2>=1.0.0
 python-can-remote
 gevent-websocket
 greenlet
-python-prctl
+influxdb

@@ -1,8 +1,8 @@
 {
 	"main": {
 		"port": "3333",
-		"ip": "192.168.1.6",
-		"folder": "/srv/public/Nutzer/David_Bauer/LabNetApp"
+		"ip": "127.0.0.1",
+		"folder": "/home/bauer/fablab/LabNetApp"
 	},
 	"feature":{
 		"redis": false,
@@ -10,7 +10,8 @@
 		"configMgmt": false,
 		"canLog": false,
 		"can": true,
-		"gmusic": true
+		"gmusic": true,
+		"influxdb": true
 	},
 	"can":{
 		"interface":"can1",
@@ -20,6 +21,12 @@
 	},
 	"mpd":{
 		"server":"192.168.1.6"
+	},
+	"influxdb":{
+		"server":"192.168.1.6",
+		"password": "labnet",
+		"username": "labnet",
+		"database": "labnet"
 	},
 	"gmusic":{
 		"server":"192.168.149.128:9999",
