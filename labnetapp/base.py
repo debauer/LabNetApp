@@ -14,12 +14,19 @@ from flask import request
 
 from nodeConfig import *
 
-def print (asd):
-	syslog.syslog(str(asd))
+if app.config['FEATURE']["influxdb"]:
+    from labnetapp import canMetrics
+    msgMetrics = deque([])
 
 msgTX = deque([])
 msgRX = deque([])
+
+
 bus = None
+  
+def print (asd):
+    syslog.syslog(str(asd))
+
 
 def getOnlyActiveStripNamesSortedJson():
     data = {}
@@ -103,6 +110,8 @@ def canRx():
             message = bus.recv(1)
 #            print(message)
             if message is not None:
+                if app.config['FEATURE']["influxdb"]:
+                    msgMetrics.append(message)
                 msgRX.append(message)
             else:
                 time.sleep(0.1)
@@ -116,6 +125,23 @@ def canRx():
             else:
                 print("canRx" + str( err))
 
+def rxToMetrics():
+    metric = canMetrics.canMetrics(app.config['INFLUXDB'])
+    prctl.set_name("rxToMetrics")
+    ts = time.time()
+    while True:
+        if(ts+1 < time.time()):
+            metric.calc()
+            ts=ts+1
+        try:
+            if len(msgMetrics) > 0:
+                message = msgMetrics.pop()
+                if message is not None:
+                    obj = canObj.canObj()
+                    obj.readMsg(message)
+                    metric.put(obj)
+        except Exception as err:
+            print("rxToMetrics" + " " + str(err))
 
 def rxToSocket():
     prctl.set_name("rxToSocket")
@@ -191,8 +217,13 @@ def canTx():
 
 # API
 
+
+@app.route('/plug/<id>/status', methods=['GET'])
+def getPlugStatus(id):
+    return plugs[id].getStatus()
+
 @app.route('/plug/<id>/power', methods=['POST'])
-def postFoo(id):
+def setPlugPower(id):
     print(request.data.decode("utf-8"))
     dataDict = json.loads(request.data.decode("utf-8"))
     print(id + dataDict["state"])
@@ -296,6 +327,8 @@ if app.config['FEATURE']['can']:
         #thread_rx.start()
 
         # real Threads!!! No Frontend stuff here!
+        if app.config['FEATURE']["influxdb"]:
+            start_new_thread(rxToMetrics, ())
         start_new_thread(canRx, ())
         start_new_thread(canTx, ())
         time.sleep(0.3)

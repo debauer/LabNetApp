@@ -1,5 +1,6 @@
 {
 	"main": {
+		"name":"dev",
 		"port": "3333",
 		"ip": "127.0.0.1",
 		"folder": "/home/bauer/fablab/LabNetApp"

@@ -28,11 +28,16 @@ app.config['FEATURE']				= conf['feature']
 
 app.config['PORT']					= int(conf["main"]['port'])
 app.config['IP']					= conf["main"]['ip']
+app.config['NAME']					= conf["main"]['name']
 
 app.config['NODE_CONFIG'] = conf['main']['folder'] + "/node_config"  + "/" + conf["can"]['config']
 
 #from labnetapp import keyvalue as kv
 #store = kv.KeyValue(mongo=False,redis=app.config['FEATURE']['redis'] )
+
+if app.config['FEATURE']["influxdb"]:
+	app.config['INFLUXDB'] = conf['influxdb']
+	from labnetapp import canMetrics
 
 from labnetapp import base
 
@@ -43,9 +48,7 @@ if app.config['FEATURE']["can"]:
 #		app.config['CAN_LOG_FOLDER'] = conf['main']['folder'] + "/" + conf['can']['logFolder']
 #		from labnetapp import can_log
 
-if app.config['FEATURE']["influxdb"]:
-	app.config['INFLUXDB'] = conf['influxdb']
-	from labnetapp import canMetrics
+
 
 #if app.config['FEATURE']["mpd"]:
 #	app.config['MPD'] = conf['mpd']
