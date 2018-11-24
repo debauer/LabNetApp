@@ -39,7 +39,7 @@ if app.config['FEATURE']["influxdb"]:
 	app.config['INFLUXDB'] = conf['influxdb']
 	from labnetapp import canMetrics
 
-from labnetapp import base
+from labnetapp import base, restApi, socketApi
 
 if app.config['FEATURE']["can"]:
 	app.config['CAN'] = conf['can']
