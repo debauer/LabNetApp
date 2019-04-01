@@ -3,7 +3,7 @@
 		"name":"dev",
 		"port": "3333",
 		"ip": "127.0.0.1",
-		"folder": "/home/bauer/fablab/LabNetApp"
+		"folder": "/home/debauer/fablab/LabNetApp"
 	},
 	"feature":{
 		"redis": false,
@@ -11,8 +11,8 @@
 		"configMgmt": false,
 		"canLog": false,
 		"can": true,
-		"gmusic": true,
-		"influxdb": true
+		"gmusic": false,
+		"influxdb": false
 	},
 	"can":{
 		"interface":"can1",
