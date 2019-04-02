@@ -2,7 +2,7 @@ from flask import Flask, request
 from labnetapp import app
 from collections import deque
 from nodeConfig import *
-from labnetapp.base import reqRittalStatusFromAll
+from labnetapp.can import reqRittalStatusFromAll
 
 
 # API
@@ -15,10 +15,10 @@ def getLabStatus():
 
 # API
 # get plug status
-@app.route('/lab/status', methods=['POST'])
-def setLabStatus():
-    #TBI
-    return "TBI"
+#@app.route('/lab/status', methods=['POST'])
+#def setLabStatus():
+#    #TBI
+#    return "TBI"
 
 # API
 # get plug status

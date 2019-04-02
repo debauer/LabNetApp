@@ -2,7 +2,7 @@ from flask import Flask, request
 from labnetapp import app, socketio
 from collections import deque
 from nodeConfig import *
-from labnetapp.base import reqRittalStatusFromAll
+from labnetapp.can import reqRittalStatusFromAll
 
 @socketio.on('connect')
 def onConnect():

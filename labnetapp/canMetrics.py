@@ -2,8 +2,6 @@
 import time
 
 from labnetapp import app, canObj
-
-
 from influxdb import InfluxDBClient
 from influxdb import SeriesHelper
 

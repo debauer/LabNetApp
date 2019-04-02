@@ -10,7 +10,6 @@
 		"mpd": false,
 		"configMgmt": false,
 		"canLog": false,
-		"can": true,
 		"gmusic": false,
 		"influxdb": false
 	},

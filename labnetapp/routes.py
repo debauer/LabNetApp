@@ -2,7 +2,7 @@ from flask import Flask, request
 from labnetapp import app
 from collections import deque
 from nodeConfig import *
-from labnetapp.base import reqRittalStatusFromAll
+from labnetapp.can import reqRittalStatusFromAll
 
 @app.route('/steckdosen')
 def steckdosen():

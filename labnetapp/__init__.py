@@ -39,11 +39,7 @@ if app.config['FEATURE']["influxdb"]:
 	app.config['INFLUXDB'] = conf['influxdb']
 	from labnetapp import canMetrics
 
-from labnetapp import base, restApi, socketApi
-
-if app.config['FEATURE']["can"]:
-	app.config['CAN'] = conf['can']
-	from labnetapp import canObj
+from labnetapp import restApi, socketApi, anObj, base
 #	if app.config['FEATURE']["canLog"]:
 #		app.config['CAN_LOG_FOLDER'] = conf['main']['folder'] + "/" + conf['can']['logFolder']
 #		from labnetapp import can_log
