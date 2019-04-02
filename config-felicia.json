@@ -1,9 +1,9 @@
 {
 	"main": {
-		"name":"dev",
+		"name":"felicia",
 		"port": "3333",
-		"ip": "127.0.0.1",
-		"folder": "/home/debauer/fablab/LabNetApp"
+		"ip": "192.168.1.6",
+		"folder": "/home/labnet/LabNetApp"
 	},
 	"feature":{
 		"redis": false,
