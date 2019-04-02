@@ -156,19 +156,6 @@ def canTx():
 
 # API
 
-# APP 
-# /steckdosen
-@app.route('/steckdosen')
-def steckdosen():
-    debug = ""
-    print(getOnlyActiveStripNamesSortedJson())
-    return render_template('powerplugsOverview.html',strips=getOnlyActiveStripNamesSortedJson(),plugs=getAllPlugsJson(),debug=debug)
-
-@app.route('/', methods=('GET', 'POST'))
-@app.route('/index')
-def index():
-    return render_template('index.html')
-
 def reqRittalStatusFromAll():
     bus.send(can.Message(extended_id=True, arbitration_id=0x00000001, data=b"ASDF1234"))
 

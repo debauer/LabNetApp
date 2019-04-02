@@ -4,10 +4,34 @@ from collections import deque
 from nodeConfig import *
 from labnetapp.base import reqRittalStatusFromAll
 
+
+# API
+# get plug status
+@app.route('/lab/status', methods=['GET'])
+def getLabStatus():
+    #TBI
+    return "TBI"
+
+
+# API
+# get plug status
+@app.route('/lab/status', methods=['POST'])
+def setLabStatus():
+    #TBI
+    return "TBI"
+
+# API
+# get plug status
 @app.route('/plug/<id>/status', methods=['GET'])
 def getPlugStatus(id):
     return plugs[id].getStatus()
 
+# API
+# set plug
+# 
+# request body:
+# {state: "on or off"}
+#
 @app.route('/plug/<id>/power', methods=['POST'])
 def setPlugPower(id):
     print(request.data.decode("utf-8"))
