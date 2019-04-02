@@ -38,7 +38,6 @@ class canMetrics:
         global mps
         mps = mps + 1 
 
-
     ## call every 60s
     def calc(self):
         global mps

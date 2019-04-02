@@ -30,24 +30,18 @@ def connectCan():
     global bus
     if app.config['FEATURE']['can']:
         try:
-            #bus = can.interface.Bus(app.config['CAN']['interface'], bustype=app.config['CAN']['type'])
-            bus = can.ThreadSafeBus('ws://192.168.1.11:54701/',
-                                    bustype='remote', bitrate=500000, receive_own_messages=True)
-            #can_buffer = can.BufferedReader()
-            #notifier = can.Notifier(bus, [can_buffer], timeout=0.1)
+            bus = can.ThreadSafeBus(app.config['CAN']['interface'], bustype=app.config['CAN']['type'], bitrate=500000, receive_own_messages=True)
+            # can_buffer = can.BufferedReader()
+            # notifier = can.Notifier(bus, [can_buffer], timeout=0.1)
             print("CAN bus connected")
             return True
         except BaseException as e:
-            #print("CAN bus error: %s" % e)
+            # print("CAN bus error: %s" % e)
             return e
-
-
             #sys.exit(1)
 
 
 ### RX #####
-
-
 def canRx():
     prctl.set_name("canRx")
     while True:

@@ -23,10 +23,9 @@ def setPlugPower(id):
 # returns the complete labnet config file 
 @app.route('/config')
 def nodeConfig():
-    f = open("nodeConfig/mainv2.json", 'r').read()
+    f = open("nodeConfig/main.json", 'r').read()
     #print(getAllPlugsJson())
     return f
- 
 
 # API
 # reloads config

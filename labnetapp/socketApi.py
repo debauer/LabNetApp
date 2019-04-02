@@ -9,7 +9,7 @@ def onConnect():
     socketio.emit('plugStatusList', getAllPlugsJson() , broadcast=True)
     
 @socketio.on('fetchPlugList')
-def onConnect():
+def fetchPlugList():
     socketio.emit('plugStatusList', getAllPlugsJson() , broadcast=True)
 
 @socketio.on('setPlugPower')
