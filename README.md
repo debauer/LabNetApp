@@ -4,11 +4,16 @@ Official App for the LabNet
 
 # Install
 
-1. install python3 and python3-pip: aptitude install python3 redis-server
-2. clone this repo
-3. clone https://github.com/fablab-ka/LabNet-Node-Config in the root folder of the LabNetApp as "node_config"
-4. update packages: pip3 install -r requirements.txt
-5. (optional) install redis-server: aptitude install redis-server
-6. start app with: python3 main.py
+1. aptitude install python3
+2. cd /to/your/install/path
+3. git clone https://github.com/fablab-ka/LabNetApp
+4. cd LabNetApp
+5. git clone https://github.com/fablab-ka/LabNet-Node-Config nodeConfig
+6. pip3 install -r requirements.txt
 
-# 
+# Run
+1. edit config.json
+2. python3 main.py
+
+# Install as Service
+Use labnetapp.service file
